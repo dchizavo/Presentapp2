@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="me.gujun.android.taggroup:library-1.4">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/library-1.4.aar/92dfd2e189203b08a43b4d4b13a85545/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/library-1.4.aar/92dfd2e189203b08a43b4d4b13a85545/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/library-1.4.aar/8b732d04f6cee078e193ab0779946603/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/library-1.4.aar/8b732d04f6cee078e193ab0779946603/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

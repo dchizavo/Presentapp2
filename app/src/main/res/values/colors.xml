@@ -15,5 +15,8 @@
     <color name="color_btn_ent">#ffffff</color>
 
 
+
+
     <color name="color_notificacion">#dc9233</color>
+    <color name="negro_opaco">#5d000000</color>
 </resources>

@@ -2,6 +2,7 @@ package sunnysoft.presentapp.Interfaz.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +14,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,7 +53,7 @@ public class MuralesAdapter extends RecyclerView.Adapter<MuralesAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.txvNombre.setText(muralesList.get(position).getNombre());
         holder.txvFecha.setText(muralesList.get(position).getFecha());
         holder.web.getSettings().setJavaScriptEnabled(true);
@@ -67,8 +71,18 @@ public class MuralesAdapter extends RecyclerView.Adapter<MuralesAdapter.ViewHold
         }
         //Log.e("photuser", muralesList.get(position).getImagen_persona());
 
+        Transformation transformation = new RoundedTransformationBuilder()
+                .borderColor(Color.WHITE)
+                .borderWidthDp(2)
+                .cornerRadiusDp(30)
+                .oval(false)
+                .build();
+
+
         Picasso.with(context)
                 .load(muralesList.get(position).getImagen_persona())
+                .fit()
+                .transform(transformation)
                 .error(R.drawable.logo)
                 .into(holder.imgPersona);
 
@@ -110,16 +124,27 @@ public class MuralesAdapter extends RecyclerView.Adapter<MuralesAdapter.ViewHold
                 Map.Entry photo_item = (Map.Entry)iteratorphotos.next();
 
                 if (inicio == 1){
-                    Picasso.with(context).load(photo_item.getValue().toString()).error(R.drawable.logo).into(holder.adjImg1);
+                    Picasso.with(context).load(photo_item.getValue().toString()).fit().error(R.drawable.logo).into(holder.adjImg1);
 
                 } else if (inicio == 2){
-                    Picasso.with(context).load(photo_item.getValue().toString()).error(R.drawable.logo).into(holder.adjImg2);
+                    Picasso.with(context).load(photo_item.getValue().toString()).fit().error(R.drawable.logo).into(holder.adjImg2);
                     //break;
 
                 } else if (inicio == 3){
-                    Picasso.with(context).load(R.drawable.logo).error(R.drawable.logo).into(holder.adjImg2);
+                    //Picasso.with(context).load(R.drawable.logo).error(R.drawable.logo).into(holder.adjImg2);
                     //holder.adjImg2.setImageResource(R.drawable.logo);
                     break;
+                }
+
+                if (pho.size() == 1){
+                    holder.adjImg2.setVisibility(View.GONE);
+                } else if (pho.size()>2){
+                    int mas = pho.size() - 2;
+                    holder.cont_vermas.setVisibility(View.VISIBLE);
+                    holder.num_vermas.setText(""+mas+"+");
+                }else{
+                    holder.cont_vermas.setVisibility(View.GONE);
+
                 }
 
             }
@@ -170,6 +195,9 @@ public class MuralesAdapter extends RecyclerView.Adapter<MuralesAdapter.ViewHold
         private ImageView imgPersona;
         private TextView txtreadmore;
         private GridView grid;
+        private TextView num_vermas;
+        private ConstraintLayout cont_vermas;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -185,6 +213,8 @@ public class MuralesAdapter extends RecyclerView.Adapter<MuralesAdapter.ViewHold
             adjImg2 = (ImageView)itemView.findViewById(R.id.adj_img_2);
             //adjImg3 = (ImageView)itemView.findViewById(R.id.adj_img_3);
             grid = (GridView)itemView.findViewById(R.id.grid_files_adj);
+            num_vermas =(TextView)itemView.findViewById(R.id.num_vermas);
+            cont_vermas = (ConstraintLayout)itemView.findViewById(R.id.cont_num_vermas);
 
 
         }

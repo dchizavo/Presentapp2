@@ -8,7 +8,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
@@ -21,7 +21,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp">
 
             <WebView
                 android:id="@+id/web_contenido"
@@ -38,9 +39,9 @@
                 android:id="@+id/readmore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 android:text="@string/vermas"
                 android:textColor="@color/basico"
-                android:layout_marginTop="0dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="gone"
@@ -63,41 +64,65 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cont_adjuntos">
+                app:layout_constraintTop_toBottomOf="@+id/cont_adjuntos"
+                app:layout_constraintVertical_bias="0.0">
 
 
-                <ImageView
-                    android:id="@+id/adj_img_2"
+                <FrameLayout
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/adj_img_1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/modulos" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/adj_img_3"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/adj_img_1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/modulos" />
+                    <ImageView
+                        android:id="@+id/adj_img_2"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:tintMode="add"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/modulos" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cont_num_vermas"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/negro_opaco"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/num_vermas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:text="TextView"
+                            android:textAlignment="center"
+                            android:textColor="@color/color_letra_in_prim"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </FrameLayout>
 
                 <ImageView
                     android:id="@+id/adj_img_1"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -113,12 +138,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="00dp"
-                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:paddingBottom="0dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/readmore">
 
@@ -126,6 +149,7 @@
                     android:id="@+id/grid_files_adj"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
                     android:numColumns="2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -139,8 +163,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:text="TextView"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imagen"
@@ -154,7 +179,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -164,11 +189,11 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/imagen"
                 android:layout_width="50dp"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="8dp"
                 app:cardCornerRadius="25dp"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -178,9 +203,8 @@
 
                     <ImageView
                         android:id="@+id/img_persona"
-                        android:layout_width="50dp"
-                        android:layout_height="40dp"
-                        android:scaleType="centerInside"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
