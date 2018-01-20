@@ -5,21 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Interfaz.EntradasActivity">
+    tools:context=".Interfaz.EntradasActivity"
+    android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        >
+        android:theme="@style/AppTheme.AppBarOverlay">
+
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
 
 
         <android.support.design.widget.TabLayout
@@ -38,7 +38,11 @@
         android:id="@+id/viewpagerent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -59,7 +63,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.941"
         app:srcCompat="@drawable/icono_menu" />
-
-
 
 </android.support.design.widget.CoordinatorLayout>

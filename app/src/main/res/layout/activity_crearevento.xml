@@ -118,7 +118,6 @@
         android:layout_marginTop="180dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Escribe el nombre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +167,7 @@
         android:clickable="true" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/enviodataevento"
         style="@style/inputs_secundarios"
         android:layout_width="wrap_content"
         android:layout_height="49dp"

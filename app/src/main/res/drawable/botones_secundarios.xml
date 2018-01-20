@@ -4,7 +4,7 @@
         <shape>
 
             <corners android:radius="@dimen/borde_botones"/>
-            <stroke android:width="@dimen/borde_input"
+            <stroke android:width="2dp"
                 android:color="@color/color_inputs_primarios"/>
 
         </shape>

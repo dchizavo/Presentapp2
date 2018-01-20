@@ -2,7 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <corners android:radius="@dimen/borde_botones"/>
+            <corners android:radius="@dimen/borde_botones"
+                android:startColor="@color/color_botones_primarios"
+                android:centerColor="@color/color_botones_primarios"
+                android:endColor="@color/color_botones_primarios"/>
             <gradient
                 android:startColor="@color/color_botones_primarios"
                 android:centerColor="@color/color_botones_primarios"

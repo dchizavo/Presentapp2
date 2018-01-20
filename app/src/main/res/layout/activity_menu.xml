@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="120dp"
         app:cardCornerRadius="50dp"
         app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,25 +25,24 @@
 
             <ImageView
                 android:id="@+id/menimageuser"
-                android:layout_width="84dp"
-                android:layout_height="89dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:src="@android:color/transparent"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                     android:src="@android:color/transparent"
+                android:layout_centerInParent="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.504" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
+
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="348dp"
+        android:layout_height="396dp"
         android:background="@color/color_input"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +55,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
-            android:text="Docente"
+            android:text=""
             android:textColor="@color/color_letra_in_prim"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +68,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="60dp"
-            android:text="Andrea Carolina Jimenez Ochoa"
+            android:text=""
             android:textColor="@color/color_letra_in_prim"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,12 +79,10 @@
             android:id="@+id/gridmenu"
             android:layout_width="wrap_content"
             android:layout_height="229dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:numColumns="3"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_profecion" />
@@ -95,15 +92,17 @@
 
     <ImageView
         android:id="@+id/menlogocol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="198dp"
+        android:layout_height="92dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.333"
         app:srcCompat="@android:color/transparent" />
 
 

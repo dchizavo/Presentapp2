@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
@@ -28,11 +28,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imagen" />
+
+            <TextView
+                android:id="@+id/readmore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vermas"
+                android:textColor="@color/basico"
+                android:layout_marginTop="0dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.045"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/web_contenido"
+                tools:ignore="MissingConstraints" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cont_img_adjuntos"
@@ -42,92 +59,76 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cont_adjuntos">
 
-                <ImageView
-                    android:id="@+id/adj_img_3"
-                    android:layout_width="95dp"
-                    android:layout_height="95dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/color_notificacion"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/calendario" />
 
                 <ImageView
                     android:id="@+id/adj_img_2"
-                    android:layout_width="95dp"
-                    android:layout_height="95dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
-                    android:background="@color/color_notificacion"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/adj_img_3"
+                    app:layout_constraintStart_toEndOf="@+id/adj_img_1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/modulos" />
+
+                <ImageView
+                    android:id="@+id/adj_img_3"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/adj_img_1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/modulos" />
 
                 <ImageView
                     android:id="@+id/adj_img_1"
-                    android:layout_width="95dp"
-                    android:layout_height="95dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:background="@color/color_notificacion"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/murales" />
+
+
             </android.support.constraint.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/readmore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Ver más"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.111"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/web_contenido"
-                tools:ignore="MissingConstraints" />
-
-
 
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cont_adjuntos"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="00dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
-                android:visibility="visible"
+                android:paddingBottom="0dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/readmore">
 
-                <Button
-                    android:id="@+id/adjunto1"
-                    style="@style/adjuntos"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="button.xlsx"
+                <GridView
+                    android:id="@+id/grid_files_adj"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:numColumns="2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
@@ -163,9 +164,9 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/imagen"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
                 app:cardCornerRadius="25dp"
                 app:cardElevation="10dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -177,8 +178,9 @@
 
                     <ImageView
                         android:id="@+id/img_persona"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerInside"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
