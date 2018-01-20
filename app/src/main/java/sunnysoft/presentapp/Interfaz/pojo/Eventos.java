@@ -15,8 +15,9 @@ public class Eventos {
     private String mId;
     private String detail_url;
     private Integer indice;
+    private String fechaeventoString;
 
-    public Eventos(String id, String evento, String tipoevento, String fechaevento, String horaevento, String detail_url, Integer indice) {
+    public Eventos(String id, String evento, String tipoevento, String fechaevento, String horaevento, String detail_url, Integer indice, String fechaeventoString) {
 
         mId = UUID.randomUUID().toString();
         this.id = id;
@@ -26,6 +27,15 @@ public class Eventos {
         this.horaevento = horaevento;
         this.detail_url = detail_url;
         this.indice = indice;
+        this.fechaeventoString = fechaeventoString;
+    }
+
+    public String getFechaeventoString() {
+        return fechaeventoString;
+    }
+
+    public void setFechaeventoString(String fechaeventoString) {
+        this.fechaeventoString = fechaeventoString;
     }
 
     public String getId() {

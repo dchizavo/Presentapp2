@@ -1,5 +1,6 @@
 package sunnysoft.presentapp.Interfaz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,21 +18,22 @@ public class RedactaremailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redactaremail);
 
-
-        //Tooblar
+//Tooblar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView)toolbar.findViewById(R.id.toolbar_title);
+        TextView toolbar_title = (TextView) toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
-        //toolbar_title.setText(getResources().getText(R.string.txt_menu_Temail));
+        toolbar_title.setText(getResources().getText(R.string.txt_menu_Temail));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                Intent i = new Intent(RedactaremailActivity.this, MenuActivity.class);
+                startActivity(i);
             }
         });
     }

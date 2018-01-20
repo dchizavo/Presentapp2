@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cz.msebera.android.httpclient.client.methods.HttpPost;
 import sunnysoft.presentapp.Interfaz.CreateentradaActivity;
@@ -20,14 +21,16 @@ public class MyAsyncTask extends AsyncTask<String,Void,String> {
     HttpPost httppost;
     String proceso;
     String urlv;
+    String nombre;
 
 
     /**Constructor de clase */
-    public MyAsyncTask(Context context, HttpPost httppost, String proceso, String urlv ) {
+    public MyAsyncTask(Context context, HttpPost httppost, String proceso, String urlv, String nombre ) {
         this.context = context;
         this.httppost = httppost;
         this.proceso = proceso;
         this.urlv= urlv;
+        this.nombre = nombre;
 
     }
 
@@ -72,8 +75,11 @@ public class MyAsyncTask extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String resul) {
         progressDialog.dismiss();
+
+        Toast.makeText(context, "La entrada se ha registrado", Toast.LENGTH_LONG).show();
         Intent i = new Intent(context, CreateentradaActivity.class);
         i.putExtra("url", urlv);
+        i.putExtra("nombre", nombre);
         context.startActivity(i);
 
     }

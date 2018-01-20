@@ -54,30 +54,33 @@ public class EventosAdapter extends ArrayAdapter<Eventos> {
             holder.fechaevento = (TextView) convertView.findViewById(R.id.tv_fechaevento);
             holder.horaevento = (TextView) convertView.findViewById(R.id.tv_horaevento);
             convertView.setTag(holder);
+
         } else {
+
             holder = (ViewHolder) convertView.getTag();
+
         }
 
-        // Lead actual.
+        // Actual.
         Eventos evento = getItem(position);
-
         // Setup.
 
-        holder.evento.setText(evento.getEvento());
 
-        switch (evento.getTipoevento()){
+            holder.evento.setText(evento.getEvento());
 
-            case "entrada":
-                holder.evento.setTextColor(Color.parseColor("#DC9233"));
-                break;
-            case "institucional":
-                holder.evento.setTextColor(Color.parseColor("#69B4E8"));
-                break;
-        }
+            switch (evento.getTipoevento()){
 
-        holder.tipoevento.setText(evento.getTipoevento());
-        holder.fechaevento.setText(evento.getFechaeevento());
-        holder.horaevento.setText(evento.getHoraevento());
+                case "entrada":
+                    holder.evento.setTextColor(Color.parseColor("#DC9233"));
+                    break;
+                case "institucional":
+                    holder.evento.setTextColor(Color.parseColor("#69B4E8"));
+                    break;
+            }
+
+            holder.tipoevento.setText(evento.getTipoevento());
+            holder.fechaevento.setText(evento.getFechaeventoString());
+            holder.horaevento.setText(evento.getHoraevento());
 
         return convertView;
     }
@@ -88,5 +91,7 @@ public class EventosAdapter extends ArrayAdapter<Eventos> {
         TextView fechaevento;
         TextView horaevento;
     }
+
+
 
 }

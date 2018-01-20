@@ -10,6 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
@@ -52,6 +54,7 @@ public class MenuActivity extends AppCompatActivity {
     String url;
 
     String nombremenu;
+    String nombremenu2;
     int notification_count;
 
     // declaracion de BD
@@ -74,7 +77,9 @@ public class MenuActivity extends AppCompatActivity {
     GridView gv;
 
     ArrayList<String> prgmNameList = new ArrayList<String>();
+    ArrayList<String> prgmDisplayList = new ArrayList<String>();
     ArrayList<Integer> prgmImages = new ArrayList<Integer>();
+    ArrayList<Integer> prgnotificacion = new ArrayList<Integer>();
 
 
 
@@ -118,15 +123,15 @@ public class MenuActivity extends AppCompatActivity {
         url += "?token="+token;
         url += "&email="+ email;
 
-        //Log.e("url", url);
+        Log.e("url", url);
         // setear imagenes
         new MenuActivity.DownloadImage().execute(logo);
         new MenuActivity.DownloadImage2().execute(user_image);
 
         // setear textos principales
 
-        lbl_nombre.setText(user_name);
-        lbl_profecion.setText(user_type);
+        //lbl_nombre.setText(user_name);
+        //lbl_profecion.setText(user_type);
 
         // iniciar gridview
         gv=(GridView) findViewById(R.id.gridmenu);
@@ -176,8 +181,21 @@ public class MenuActivity extends AppCompatActivity {
                     responseStr = new String(responseBody, "UTF-8");
                     // manejo del primer nivel de objetos
                     JSONObject user = new JSONObject(responseStr);
-                    // Se obtiene valores del objeto
+                    JSONObject user_object = new JSONObject(user.getString("user"));
+                    // Se user_name valores del objeto
+
+                   /* String valorLlave2 = user.getString("user");
+
+                    JSONObject user2 = new JSONObject(valorLlave2);
+                    //Log.e("user" user2)
+                    // setear textos principales
+
+                       lbl_nombre.setText(user2.getString("user_name"));
+                       lbl_profecion.setText(user2.getString("user_type"));*/
+
                     String valorLlave = user.getString("menu");
+                    lbl_nombre.setText(user_object.getString("user_name"));
+                    lbl_profecion.setText(user_object.getString("user_type"));
 
                     JSONArray items = new JSONArray(valorLlave);
 
@@ -187,9 +205,12 @@ public class MenuActivity extends AppCompatActivity {
                         JSONObject valores = new JSONObject(item);
 
                         nombremenu = valores.getString("name");
+                        nombremenu2 = valores.getString("display_name");
                         notification_count = valores.getInt("notification_count");
 
                         prgmNameList.add(nombremenu);
+                        prgmDisplayList.add(nombremenu2);
+                        prgnotificacion.add(notification_count);
 
                         switch (nombremenu){
 
@@ -211,19 +232,27 @@ public class MenuActivity extends AppCompatActivity {
                         }
 
                     }
-                    progressDialog[0].dismiss();
+
 
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    Log.e("Mensaje error:",""+e);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("Mensaje error:",""+e);
                 }
 
                 prgmNameList.add("Logouth");
+                prgmDisplayList.add("Logouth");
+                prgnotificacion.add(0);
                 prgmImages.add(R.drawable.cerrarsession);
 
-                AdapterMenu adapter = new AdapterMenu((MenuActivity) context, prgmNameList,prgmImages);
+                //Log.e("imagenes", String.valueOf(prgmImages));
+
+                progressDialog[0].dismiss();
+
+                AdapterMenu adapter = new AdapterMenu((MenuActivity) context, prgmNameList,prgmImages, prgmDisplayList, prgnotificacion);
                 gv.setAdapter(adapter);
 
                 //gv.setAdapter(new AdapterMenu(getContext(), prgmNameList,prgmImages));
@@ -359,7 +388,23 @@ public class MenuActivity extends AppCompatActivity {
     @Deprecated
     public void setBackgroundDrawable2(Drawable drawable) {
 
-        menimageuser.setBackgroundDrawable(drawable);
+        //extraemos el drawable en un bitmap
+        //Drawable originalDrawable = getResources().getDrawable();
+        Drawable originalDrawable = drawable;
+        Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+
+        //creamos el drawable redondeado
+        RoundedBitmapDrawable roundedDrawable =
+                RoundedBitmapDrawableFactory.create(getResources(), originalBitmap);
+
+        //asignamos el CornerRadius
+        roundedDrawable.setCornerRadius(originalBitmap.getHeight());
+
+        //ImageView imageView = (ImageView) findViewById(R.id.imageView);
+
+        //imageView.setImageDrawable(roundedDrawable);
+
+        menimageuser.setBackgroundDrawable(roundedDrawable);
     }
 
     public class DownloadImage2 extends AsyncTask<String, Integer, Drawable> {

@@ -1,6 +1,7 @@
 package sunnysoft.presentapp.Interfaz.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import me.gujun.android.taggroup.TagGroup;
+import sunnysoft.presentapp.Interfaz.CalendarioActivity;
+import sunnysoft.presentapp.Interfaz.VereventoActivity;
 import sunnysoft.presentapp.Interfaz.pojo.Entradas;
 import sunnysoft.presentapp.Interfaz.pojo.Murales;
 import sunnysoft.presentapp.R;
@@ -29,6 +33,7 @@ public class EntradasAdapter extends RecyclerView.Adapter<EntradasAdapter.ViewHo
 
     Context context;
     List<Entradas>entradasList;
+    private boolean isLoadingAdded = false;
 
     public EntradasAdapter(Context context, List<Entradas> entradasList) {
         this.context = context;
@@ -44,28 +49,10 @@ public class EntradasAdapter extends RecyclerView.Adapter<EntradasAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //holder.txvNombre.setText(muralesList.get(position).getNombre());
-        //holder.txvFecha.setText(muralesList.get(position).getFecha());
-        //holder.web.getSettings().setJavaScriptEnabled(true);
-        //holder.web.loadDataWithBaseURL(null,muralesList.get(position).getContenido(),"text/html","utf-8",null);
-        //Log.i("Adapter",muralesList.get(position).getImagen_persona());
 
-        /*Picasso.with(context)
-                .load(muralesList.get(position).getImagen_persona())
-                .error(R.drawable.logo)
-                .into(holder.imgPersona);*/
-
-        /*if (muralesList.get(position).isAdjuntos()){
-            holder.contAdjuntos.setVisibility(View.VISIBLE);
-        }else{
-            holder.contAdjuntos.setVisibility(View.GONE);
-        }*/
-
-        /*if (muralesList.get(position).isAdjutos_imagen()){
-            holder.contImgAdjuntos.setVisibility(View.VISIBLE);
-        }else{
-            holder.contImgAdjuntos.setVisibility(View.GONE);
-        }*/
+        holder.titulo.setText(entradasList.get(position).getNombre());
+        holder.detalle.setText(entradasList.get(position).getFecha());
+        holder.mTagGroup.setTags(entradasList.get(position).getTags());
 
     }
 
@@ -74,34 +61,38 @@ public class EntradasAdapter extends RecyclerView.Adapter<EntradasAdapter.ViewHo
         return entradasList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener{
 
-        private ConstraintLayout contImgAdjuntos;
-        private ImageView adjImg3;
-        private ImageView adjImg2;
-        private ImageView adjImg1;
-        private ConstraintLayout contAdjuntos;
-        private Button adjunto5;
-        private Button adjunto6;
-        private Button adjunto4;
-        private Button adjunto3;
-        private Button adjunto2;
-        private Button adjunto1;
-        private WebView web;
-        private TextView txvFecha;
-        private TextView txvNombre;
-        private ImageView imgPersona;
+        TagGroup mTagGroup;
+        TextView titulo;
+        TextView detalle;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            web = (WebView)itemView.findViewById(R.id.web_contenido);
-            txvFecha = (TextView)itemView.findViewById( R.id.txv_fecha );
-            txvNombre = (TextView)itemView.findViewById( R.id.txv_nombre );
-            contAdjuntos = (ConstraintLayout)itemView.findViewById( R.id.cont_adjuntos );
-            contImgAdjuntos = (ConstraintLayout)itemView.findViewById( R.id.cont_img_adjuntos );
-            imgPersona = (ImageView)itemView.findViewById(R.id.img_persona);
+            itemView.setOnClickListener(this);
+            titulo = (TextView) itemView.findViewById(R.id.tituloverentradas);
+            detalle = (TextView) itemView.findViewById(R.id.detalleverentradas);
+            mTagGroup = (TagGroup)itemView.findViewById(R.id.tag_group_entradas);
         }
 
+        @Override
+        public void onClick(View view) {
+
+            Log.e("Data clicked", "onClick " +  entradasList.get(getPosition()).getUrl_entrada_detail());
+
+            Intent i = new Intent(context, VereventoActivity.class);
+            i.putExtra("DetailUrl",  entradasList.get(getPosition()).getUrl_entrada_detail());
+            context.startActivity(i);
+
+        }
     }
+
+
+    public Entradas getItem(int position) {
+        return entradasList.get(position);
+    }
+
+
 }

@@ -10,6 +10,10 @@
     <color name="color_input">#69b4e8</color>
     <color name="color_inputs_primarios">#69b4e8</color>
     <color name="color_botones_primarios">#1e2139</color>
+    <color name="basico">#000000</color>
+
+    <color name="color_btn_ent">#ffffff</color>
+
 
     <color name="color_notificacion">#dc9233</color>
 </resources>

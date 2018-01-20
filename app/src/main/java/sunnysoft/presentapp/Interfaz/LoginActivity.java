@@ -270,11 +270,14 @@ public class LoginActivity extends AppCompatActivity {
                                 // se maneja el array json
                                 JSONArray jsonarray = new JSONArray(msgerror);
 
+                                progressDialog[0].dismiss();
+
                                 //se obtiene cada uno de los mensajes que se encuentran dentro del json
                                 for(int i=0; i < jsonarray.length(); i++) {
                                     String mensaje = jsonarray.getString(i);
                                     Toast.makeText(LoginActivity.this, mensaje, Toast.LENGTH_LONG).show();
                                 }
+
 
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
@@ -285,11 +288,14 @@ public class LoginActivity extends AppCompatActivity {
                         // When Http response code is '500'
                         else if (statusCode == 500) {
 
+                            progressDialog[0].dismiss();
                             Toast.makeText(LoginActivity.this, "Erros Statuscode = 500", Toast.LENGTH_LONG).show();
+
                         }
                         // When Http response code other than 404, 500
                         else {
-                            Log.i("On Failure", "NN");
+                            //Log.i("On Failure", "NN");
+                            progressDialog[0].dismiss();
                             Toast.makeText(LoginActivity.this, "On Failure ", Toast.LENGTH_LONG).show();
 
                             //Institución no valida.

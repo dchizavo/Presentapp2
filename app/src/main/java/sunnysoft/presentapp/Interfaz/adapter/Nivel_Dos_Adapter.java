@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import sunnysoft.presentapp.Interfaz.VerEntradas;
 import sunnysoft.presentapp.Interfaz.entagendadiariaActivity;
 import sunnysoft.presentapp.Interfaz.pojo.Nivel_Dos;
 import sunnysoft.presentapp.Interfaz.pojo.Nivel_Tres;
@@ -35,6 +36,7 @@ public class Nivel_Dos_Adapter extends RecyclerView.Adapter<Nivel_Dos_Adapter.Vi
     Context context;
     List<Nivel_Dos>nivelDosList;
     List<Nivel_Tres>nivel_tresList;
+    String View_all_url;
 
     public Nivel_Dos_Adapter(Context context, List<Nivel_Dos> nivelDosList, List<Nivel_Tres> nivel_tresList) {
         this.context = context;
@@ -61,6 +63,7 @@ public class Nivel_Dos_Adapter extends RecyclerView.Adapter<Nivel_Dos_Adapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titulo.setText(nivelDosList.get(position).getNombre());
+        View_all_url = nivelDosList.get(position).getView_all_url();
 
         holder.lista3.clear();
         String llave2 = nivel_tresList.get(position).getNombre();
@@ -114,17 +117,19 @@ public class Nivel_Dos_Adapter extends RecyclerView.Adapter<Nivel_Dos_Adapter.Vi
             recycler_tercer_nivel.setLayoutManager(linearLayoutManager);
             Entradas();
 
-           adapter = new Nivel_Tres_Adapter(itemView.getContext(),lista3);
+            adapter = new Nivel_Tres_Adapter(itemView.getContext(),lista3);
             recycler_tercer_nivel.setAdapter(adapter);
 
             oldColors = titulo.getTextColors();
         }
 
-      private void Entradas(){
+        private void Entradas(){
+            btn_entradas.setText("Ver entradas");
             btn_entradas.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(context, entagendadiariaActivity.class);
+                    Intent i = new Intent(context, VerEntradas.class);
+                    i.putExtra("View_all_url", View_all_url);
                     context.startActivity(i);
 
                 }

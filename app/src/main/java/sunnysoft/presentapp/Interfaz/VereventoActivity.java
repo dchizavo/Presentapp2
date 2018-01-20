@@ -1,5 +1,6 @@
 package sunnysoft.presentapp.Interfaz;
 
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,19 +35,41 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import cz.msebera.android.httpclient.entity.StringEntity;
 import me.gujun.android.taggroup.TagGroup;
+import sunnysoft.presentapp.Datos.DatabaseHelper;
+import sunnysoft.presentapp.Interfaz.adapter.FieldsEventoAdapter;
+import sunnysoft.presentapp.Interfaz.adapter.ProcesoEntradasAdapter;
+import sunnysoft.presentapp.Interfaz.pojo.Entradas;
+import sunnysoft.presentapp.Interfaz.pojo.FieldsEvento;
 import sunnysoft.presentapp.R;
 
 public class VereventoActivity extends AppCompatActivity {
 
+    private DatabaseHelper midb;
     String url;
     TextView nombreevento;
     TextView cursogrupo;
     TextView txv_nombre;
+    TextView txv_fecha;
+    TextView fechainicioevento;
+    TextView horainicioevento;
+    TextView dataresponsables;
     ImageView img_persona;
+    String email;
+
+    String token;
+    String subdomain;
+    private HashMap<String, FieldsEvento> fieldsEventos = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +77,31 @@ public class VereventoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verevento);
         Bundle datos = getIntent().getExtras();
         url = datos.getString("DetailUrl");
-        url += "?token=$2y$10$uAYJ/m8k3P73nca0sQ87Ze69s6Sf/ZQSITdL/pprzCCz.OmBBywHq&email=jefferson.ceballos@dc.co";
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView)toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         toolbar_title.setText(getResources().getText(R.string.txt_menu_calendario));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        midb = new DatabaseHelper(this);
+
+        Cursor Resultados = midb.Session();
+
+        token =Resultados.getString(Resultados.getColumnIndex("token"));
+        email =Resultados.getString(Resultados.getColumnIndex("user"));
+
+        url += "?token="+token;
+        url += "&email="+ email;
+
+        //date format
+
+        final ListView mfieldsEventosList;
+        final DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final DateFormat originalFormatHour = new SimpleDateFormat("HH:mm:ss");
+
         final TagGroup mTagGroup = (TagGroup) findViewById(R.id.tag_group);
+        mfieldsEventosList = (ListView) findViewById(R.id.fieldeventos_list);
 
         //traer datos de ws
         final AsyncHttpClient client = new AsyncHttpClient();
@@ -70,6 +111,10 @@ public class VereventoActivity extends AppCompatActivity {
         nombreevento = (TextView) findViewById(R.id.nombreevento);
         cursogrupo = (TextView) findViewById(R.id.cursogrupo);
         txv_nombre = (TextView) findViewById(R.id.txv_nombre);
+        txv_fecha = (TextView) findViewById(R.id.txv_fecha);
+        fechainicioevento = (TextView) findViewById(R.id.fechainicioevento);
+        horainicioevento = (TextView) findViewById(R.id.horainicioevento);
+        dataresponsables = (TextView) findViewById(R.id.dataresponsables);
 
         img_persona = (ImageView) findViewById(R.id.img_persona);
 
@@ -97,42 +142,94 @@ public class VereventoActivity extends AppCompatActivity {
                 String user_name = null;
                 String user_image = null;
                 String name = null;
+                String nameField = null;
+                String contentField = null;
+                String created_at = null;
+                String horaevento = null;
                 String detail_url = null;
+                String time_string = null;
+                String date_string = null;
+                String created_by_name = null;
+                String tipo_persona = null;
 
                 try {
 
                     responseStr = new String(responseBody, "UTF-8");
                     JSONObject jsonobject = new JSONObject(responseStr);
                     Iterator x = jsonobject.keys();
-                   // id = jsonobject.getString("id");
+                    // id = jsonobject.getString("id");
                     proceso_name = jsonobject.getString("proceso_name");
                     curso_grupo = jsonobject.getString("curso_grupo");
                     user_name = jsonobject.getString("user_name");
+                    created_at = jsonobject.getString("created_at");
                     user_image = jsonobject.getString("user_image");
-                    user_image = jsonobject.getString("user_image");
+                    time_string = jsonobject.getString("time_string");
+                    date_string = jsonobject.getString("date_string");
+                    created_by_name  = jsonobject.getString("created_by_name");
+                    tipo_persona  = jsonobject.getString("tipo_persona");
                     JSONArray jsonarray = new JSONArray(jsonobject.getString("tags"));
+                    JSONArray jsonarray_field = new JSONArray(jsonobject.getString("fields"));
+
+                    Date daterefinit = originalFormat.parse(created_at);
+                    String dateref = originalFormat.format(daterefinit);
+                    String hourref = originalFormatHour.format(daterefinit);
+                    //Toast.makeText(VereventoActivity.this, "Fallo por "+dateref, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(VereventoActivity.this, "Fallo por "+hourref, Toast.LENGTH_LONG).show();
+
                     nombreevento.setText(proceso_name);
                     cursogrupo.setText(curso_grupo);
                     txv_nombre.setText(user_name);
+                    fechainicioevento.setText(date_string);
+                    horainicioevento.setText(time_string);
+                    dataresponsables.setText(created_by_name);
                     nombreevento.setTextColor(Color.parseColor("#DC9233"));
+                    txv_fecha.setText(tipo_persona);
                     //descarga de imagen logo del colegio
                     new DownloadImage().execute(user_image);
+                    String [] tags = new String [jsonarray.length()];
+                    String [] fields = new String [jsonarray.length()];
 
                     for(int i=0; i < jsonarray.length(); i++) {
 
                         JSONObject jsonobject_tags = jsonarray.getJSONObject(i);
                         name       = jsonobject_tags.getString("name");
+                        tags[i] = name;
 
-                        mTagGroup.setTags(new String[]{"Tag1", "Tdfgdfgdfgdgdgdfag2", "Tafghfhfg3"});
-                        Toast.makeText(VereventoActivity.this, "Fallo por "+name, Toast.LENGTH_LONG).show();
+                        // Toast.makeText(VereventoActivity.this, "Fallo por "+name, Toast.LENGTH_LONG).show();
                     }
 
-                    } catch (UnsupportedEncodingException e1) {
+                    mTagGroup.setTags(tags);
+
+
+                    for(int j=0; j < jsonarray_field.length(); j++) {
+
+                        final FieldsEventoAdapter mfieldsEventoAdapter;
+
+                        JSONObject jsonobject_fields = jsonarray_field.getJSONObject(j);
+                        nameField       = jsonobject_fields.getString("name");
+                        contentField       = jsonobject_fields.getString("content");
+                        //   FieldsEvento fieldsEvento = new FieldsEvento(nameField, contentField, j + 1);
+
+                        saveFieldEventos(new FieldsEvento(nameField, contentField, j + 1));
+                        //  Toast.makeText(VereventoActivity.this, "Fallo por "+fieldsEvento.getIndice(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(VereventoActivity.this, "Fallo por "+fieldsEvento.getDetalle(), Toast.LENGTH_LONG).show();
+
+                        // Inicializar el adaptador con la fuente de datos.
+                        mfieldsEventoAdapter = new FieldsEventoAdapter(VereventoActivity.this,getFieldEventos());
+
+                        //Relacionando la lista con el adaptador
+                        mfieldsEventosList.setAdapter(mfieldsEventoAdapter);
+
+                    }
+
+                } catch (UnsupportedEncodingException e1) {
                     e1.printStackTrace();
                     Toast.makeText(VereventoActivity.this, "Fallo por a", Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(VereventoActivity.this, "Fallo por "+e, Toast.LENGTH_LONG).show();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
             @Override
@@ -156,6 +253,14 @@ public class VereventoActivity extends AppCompatActivity {
             }
 
         });
+
+
+        //Tooblar
+        Toolbar toolbarfecha = (Toolbar) findViewById(R.id.toolbarfecha);
+        TextView toolbar_titlefecha = (TextView)toolbarfecha.findViewById(R.id.toolbar_titlefecha);
+        setSupportActionBar(toolbarfecha);
+        toolbar_titlefecha.setText("Ver evento");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
     }
@@ -217,6 +322,15 @@ public class VereventoActivity extends AppCompatActivity {
 
             return null;
         }
+    }
+
+
+    private void saveFieldEventos(FieldsEvento fieldsEvento) {
+        fieldsEventos.put(String.valueOf(fieldsEvento.getIndice()), fieldsEvento);
+    }
+
+    public List<FieldsEvento> getFieldEventos() {
+        return new ArrayList<>(fieldsEventos.values());
     }
 
 }

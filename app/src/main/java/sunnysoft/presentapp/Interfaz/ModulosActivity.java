@@ -164,7 +164,7 @@ public class ModulosActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-               Nivel_Uno_Adapter adapter;
+                Nivel_Uno_Adapter adapter;
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 recycler_nivel_uno.setLayoutManager(linearLayoutManager);
@@ -175,57 +175,57 @@ public class ModulosActivity extends AppCompatActivity {
                 recycler_nivel_uno.setAdapter(adapter);
             }
 
-             @Override
+            @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                 if (statusCode == 421) {
-                     //declaracion de variables
-                     String responseStr = null;
+                if (statusCode == 421) {
+                    //declaracion de variables
+                    String responseStr = null;
 
-                     try {
-                         // respuesta del servicio
-                         responseStr = new String(responseBody, "UTF-8");
-                         // manejo de primer nivel de objetos del json
-                         JSONObject errorx = new JSONObject(responseStr);
-                         // se obtiene los valores del json
-                         String valorLlave = errorx.getString("errors");
-                         // manejo del segundo nivel de valores de json
-                         JSONObject errorxa = new JSONObject(valorLlave);
-                         // se obtiene los valores que contiene el objeto
-                         String msgerror = errorxa.getString("login");
-                         // se maneja el array json
-                         JSONArray jsonarray = new JSONArray(msgerror);
+                    try {
+                        // respuesta del servicio
+                        responseStr = new String(responseBody, "UTF-8");
+                        // manejo de primer nivel de objetos del json
+                        JSONObject errorx = new JSONObject(responseStr);
+                        // se obtiene los valores del json
+                        String valorLlave = errorx.getString("errors");
+                        // manejo del segundo nivel de valores de json
+                        JSONObject errorxa = new JSONObject(valorLlave);
+                        // se obtiene los valores que contiene el objeto
+                        String msgerror = errorxa.getString("login");
+                        // se maneja el array json
+                        JSONArray jsonarray = new JSONArray(msgerror);
 
-                         //se obtiene cada uno de los mensajes que se encuentran dentro del json
-                         for(int i=0; i < jsonarray.length(); i++) {
-                             String mensaje = jsonarray.getString(i);
-                             Toast.makeText(ModulosActivity.this, mensaje, Toast.LENGTH_LONG).show();
-                         }
-                         midb.logouth();
-                         midb.oncreateusers();
-                         Intent i = new Intent(ModulosActivity.this, InicioActivity.class);
-                         startActivity(i);
+                        //se obtiene cada uno de los mensajes que se encuentran dentro del json
+                        for(int i=0; i < jsonarray.length(); i++) {
+                            String mensaje = jsonarray.getString(i);
+                            Toast.makeText(ModulosActivity.this, mensaje, Toast.LENGTH_LONG).show();
+                        }
+                        midb.logouth();
+                        midb.oncreateusers();
+                        Intent i = new Intent(ModulosActivity.this, InicioActivity.class);
+                        startActivity(i);
 
-                     } catch (UnsupportedEncodingException e) {
-                         e.printStackTrace();
-                     } catch (JSONException e) {
-                         e.printStackTrace();
-                     }
-                 }
-                 // When Http response code is '500'
-                 else if (statusCode == 500) {
-                     Toast.makeText(ModulosActivity.this, "Erros Statuscode = 500", Toast.LENGTH_LONG).show();
-                 }
-                 // When Http response code other than 404, 500
-                 else {
-                     Log.i("On Failure", "NN");
-                     Toast.makeText(ModulosActivity.this, "On Failure ", Toast.LENGTH_LONG).show();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(ModulosActivity.this, "Erros Statuscode = 500", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Log.i("On Failure", "NN");
+                    Toast.makeText(ModulosActivity.this, "On Failure ", Toast.LENGTH_LONG).show();
 
-                 }
+                }
 
 
-             }
+            }
 
-            });
-        }
+        });
+    }
 }

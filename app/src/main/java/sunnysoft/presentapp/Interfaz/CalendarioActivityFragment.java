@@ -244,7 +244,7 @@ public class CalendarioActivityFragment extends Fragment {
                     transaction.addToBackStack(null);
                     transaction.commit();
 */
-                   // Toast.makeText(context, dateClicked.toString(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(context, dateClicked.toString(), Toast.LENGTH_SHORT).show();
 
                 }catch (Exception e) {
 
@@ -252,11 +252,11 @@ public class CalendarioActivityFragment extends Fragment {
 
                 }
 
-               // if (dateClicked.toString().compareTo("Fri Oct 21 00:00:00 AST 2016") == 0) {
-               //     Toast.makeText(context, "Teachers' Professional Day", Toast.LENGTH_SHORT).show();
+                // if (dateClicked.toString().compareTo("Fri Oct 21 00:00:00 AST 2016") == 0) {
+                //     Toast.makeText(context, "Teachers' Professional Day", Toast.LENGTH_SHORT).show();
                 //}else {
                 //    Toast.makeText(context, "No Events Planned for that day", Toast.LENGTH_SHORT).show();
-              //  }
+                //  }
 
             }
 

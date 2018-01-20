@@ -1,6 +1,8 @@
 package sunnysoft.presentapp.Interfaz.pojo;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,21 +18,64 @@ public class Murales {
     private  String readmore;
     private Boolean adjuntos;
     private Boolean adjutos_imagen;
+    private HashMap<String, String> files = new HashMap<>();
+    private HashMap<String, String> photos = new HashMap<>();
+    private String url_detalle;
 
-
-
-
-
-    public Murales(String nombre, String fecha, String contenido, String readmore, String imagen_persona, Boolean adjuntos, Boolean adjutos_imagen) {
+    public Murales(String nombre, String fecha, String contenido, String imagen_persona, String readmore, Boolean adjuntos, Boolean adjutos_imagen, HashMap<String, String> files, HashMap<String, String> photos, String url_detalle) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.contenido = contenido;
         this.imagen_persona = imagen_persona;
+        this.readmore = readmore;
         this.adjuntos = adjuntos;
         this.adjutos_imagen = adjutos_imagen;
-        this.readmore = readmore;
-
+        this.files = files;
+        this.photos = photos;
+        this.url_detalle = url_detalle;
     }
+
+
+    public String getUrl_detalle() {
+        return url_detalle;
+    }
+
+    public void setUrl_detalle(String url_detalle) {
+        this.url_detalle = url_detalle;
+    }
+
+    public String getReadmore() {
+        return readmore;
+    }
+
+    public void setReadmore(String readmore) {
+        this.readmore = readmore;
+    }
+
+    public Boolean getAdjuntos() {
+        return adjuntos;
+    }
+
+    public Boolean getAdjutos_imagen() {
+        return adjutos_imagen;
+    }
+
+    public HashMap<String, String> getFiles() {
+        return files;
+    }
+
+    public void setFiles(HashMap<String, String> files) {
+        this.files = files;
+    }
+
+    public HashMap<String, String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(HashMap<String, String> photos) {
+        this.photos = photos;
+    }
+
     public String getImagen_persona() {
         return imagen_persona;
     }

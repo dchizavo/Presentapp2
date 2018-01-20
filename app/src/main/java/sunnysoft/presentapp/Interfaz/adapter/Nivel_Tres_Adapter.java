@@ -47,6 +47,7 @@ public class Nivel_Tres_Adapter extends RecyclerView.Adapter<Nivel_Tres_Adapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.titulo.setText(nivelTresList.get(position).getNombre());
         holder.url = nivelTresList.get(position).getUrl();
+        holder.nombre = nivelTresList.get(position).getNombre();
 
     }
 
@@ -59,6 +60,7 @@ public class Nivel_Tres_Adapter extends RecyclerView.Adapter<Nivel_Tres_Adapter.
 
         private TextView titulo;
         private String url;
+        private String nombre;
 
 
         public ViewHolder(View itemView) {
@@ -71,6 +73,7 @@ public class Nivel_Tres_Adapter extends RecyclerView.Adapter<Nivel_Tres_Adapter.
 
             Intent i = new Intent(context, CreateentradaActivity.class);
             i.putExtra("url", url);
+            i.putExtra("nombre", nombre);
             context.startActivity(i);
 
         }

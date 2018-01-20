@@ -11,6 +11,7 @@ public class Nivel_uno {
         this.nombre = nombre;
     }
 
+
     public String getNombre() {
         return nombre;
     }

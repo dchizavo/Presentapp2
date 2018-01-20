@@ -8,25 +8,62 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.support.v4.app.DialogFragment;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
+import sunnysoft.presentapp.Datos.MyAsyncTask;
 import sunnysoft.presentapp.R;
 
 public class CreareventoActivity extends AppCompatActivity implements View.OnClickListener {
 
-     EditText fechacomienzo;
-     EditText fechafin;
-     String selectedDate;
-     String selectedDatefin;
+    EditText fechacomienzo;
+    EditText fechafin;
+    EditText nombreevento;
+    String selectedDate;
+    String selectedDatefin;
+    HttpPost httppost;
+    String post_url;
+    String urlv;
+    Button enviodataevento;
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(CreareventoActivity.this, "El botón retroceder se ha deshabilitado", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crearevento);
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab3);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(CreareventoActivity.this, MenuActivity.class);
+                startActivity(i);
+            }
+        });
 
         //TextView
 
@@ -35,6 +72,11 @@ public class CreareventoActivity extends AppCompatActivity implements View.OnCli
 
         fechafin = (EditText) findViewById(R.id.fechafin);
         fechafin.setOnClickListener(this);
+
+        nombreevento = (EditText) findViewById(R.id.nombreevento);
+
+        enviodataevento = (Button) findViewById(R.id.enviodataevento);
+        enviodataevento.setOnClickListener(this);
 
         //Tooblar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,6 +108,13 @@ public class CreareventoActivity extends AppCompatActivity implements View.OnCli
             case R.id.fechafin:
                 showDatePickerDialog_fin();
                 break;
+            case R.id.enviodataevento:
+                Parsearjson();
+                String proceso = "Crear Evento";
+                String nombre = null;
+                new MyAsyncTask(CreareventoActivity.this, httppost, proceso, urlv, nombre)
+                        .execute();
+                break;
         }
 
     }
@@ -77,7 +126,7 @@ public class CreareventoActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because january is zero
-                selectedDate = twoDigits(day) + "-" + twoDigits(month+1) + "-" + twoDigits(year);
+                selectedDate = twoDigits(year) + "-" + twoDigits(month+1) + "-" + twoDigits(day);
                 //fechacomienzo.setText(selectedDate);
                 showTimePickerDialog_time();
             }
@@ -94,7 +143,7 @@ public class CreareventoActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because january is zero
-                selectedDatefin = twoDigits(day) + "-" + twoDigits(month+1) + "-" + twoDigits(year);
+                selectedDatefin = twoDigits(year) + "-" + twoDigits(month+1) + "-" + twoDigits(day);
                 //fechafin.setText(selectedDate);
                 showTimePickerDialog_timefin();
             }
@@ -109,13 +158,12 @@ public class CreareventoActivity extends AppCompatActivity implements View.OnCli
         TimePickerFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-                fechacomienzo.setText(selectedDate + " " + String.valueOf(twoDigits(hourOfDay)) + " : " + String.valueOf(twoDigits(minute)));
+                fechacomienzo.setText(selectedDate + " " + String.valueOf(twoDigits(hourOfDay)) + ":" + String.valueOf(twoDigits(minute)) + ":00");
             }
         });
         newFragment.show(fm, "datePicker");
 
     }
-
 
     private void showTimePickerDialog_timefin() {
         FragmentManager fm = getFragmentManager();
@@ -123,12 +171,55 @@ public class CreareventoActivity extends AppCompatActivity implements View.OnCli
         TimePickerFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-                fechafin.setText(selectedDatefin + " " + String.valueOf(twoDigits(hourOfDay)) + " : " + String.valueOf(twoDigits(minute)));
+                fechafin.setText(selectedDatefin + " " + String.valueOf(twoDigits(hourOfDay)) + ":" + String.valueOf(twoDigits(minute)) + ":00");
             }
         });
         newFragment.show(fm, "datePicker");
 
     }
 
+    public void Parsearjson() {
+
+        post_url = "http://serverprueba.present.com.co/api/calendar/store";
+        //   post_url += "?token=$2y$10$CUR8/fvGJKaIFUESg5its.snr0DdZkAl3YcPIpbGtgrNa94caWgta";
+        //  post_url += "&email=admin@dc.co";
+
+        httppost = new HttpPost(post_url);
+        httppost.addHeader("Content-Type", "application/json");
+        try {
+            //forma el JSON y tipo de contenido
+
+            /*JSONObject title = new JSONObject(String.valueOf(nombreevento.getText()));
+            JSONObject start = new JSONObject(String.valueOf(fechacomienzo.getText()));
+            JSONObject end = new JSONObject(String.valueOf(fechafin.getText()));
+            JSONObject ad = new JSONObject(String.valueOf(true));*/
+            JSONObject j = new JSONObject();
+            //j.put("key","users_ids");
+            j.put("title",String.valueOf(nombreevento.getText()));
+            j.put("start",String.valueOf(fechacomienzo.getText()));
+            j.put("end",String.valueOf(fechafin.getText()));
+            j.put("ad",true);
+            j.put("token","$2y$10$CUR8/fvGJKaIFUESg5its.snr0DdZkAl3YcPIpbGtgrNa94caWgta");
+            j.put("email","admin@dc.co");
+            Log.d("On real"+j.toString(), "NN");
+
+            StringEntity stringEntity = new StringEntity( j.toString());
+            //  Toast.makeText(CreareventoActivity.this, j.toString(), Toast.LENGTH_LONG).show();
+
+            stringEntity.setContentType( (Header) new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            httppost.setEntity(stringEntity);
+
+        } catch (JSONException e) {
+            Toast.makeText(CreareventoActivity.this, "Error"+e, Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(CreareventoActivity.this, "Error"+e, Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(CreareventoActivity.this, "Error"+e, Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
 
 }

@@ -12,30 +12,29 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:background="@color/white">
+
         <activity
             android:name=".Interfaz.InicioActivity"
-            android:screenOrientation="portrait" >
-
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-    </activity>
+        </activity>
         <activity
             android:name=".Interfaz.valcolegiosActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Interfaz.CreateentradaActivity"
             android:screenOrientation="portrait" />
-
-
-
         <activity
             android:name=".Interfaz.MenuActivity"
             android:screenOrientation="portrait" />
@@ -47,7 +46,6 @@
         <activity android:name=".Interfaz.ModulosActivity" />
         <activity android:name=".Interfaz.entagendadiariaActivity" />
         <activity android:name=".Interfaz.DetalleentradaActivity" />
-
         <activity android:name=".Interfaz.EntradasActivity" />
         <activity android:name=".Interfaz.DetalleentradagralActivity" />
         <activity
@@ -65,18 +63,20 @@
         <activity
             android:name=".Interfaz.CalendarioActivity"
             android:label="@string/title_activity_calendario"
-            android:theme="@style/AppTheme">
-
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".Interfaz.VereventoActivity" />
         <activity android:name=".Interfaz.CreareventoActivity" />
         <activity
             android:name=".Interfaz.BandejaCorreosActivity"
             android:label="@string/title_activity_bandeja_correos"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Interfaz.DetalleMuralesActivity" />
+        <activity android:name=".Interfaz.GaleriaDetalleActivity"></activity>
 
-        </activity>
+        <activity
+            android:name=".Interfaz.VerEntradas"
+            android:label="@string/title_activity_ver_entradas"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

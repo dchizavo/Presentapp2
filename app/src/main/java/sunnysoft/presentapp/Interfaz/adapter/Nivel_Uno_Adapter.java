@@ -61,25 +61,24 @@ public class Nivel_Uno_Adapter extends RecyclerView.Adapter<Nivel_Uno_Adapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-      holder.titulo.setText(nivelUnoList.get(position).getNombre());
-      holder.lista2.clear();
-      String llave2 = nivelDosList.get(position).getNombre();
-                try {
-                    JSONArray procesos = new JSONArray(llave2);
-                    for(int a=0; a < procesos.length(); a++) {
+        holder.titulo.setText(nivelUnoList.get(position).getNombre());
+        holder.lista2.clear();
+        String llave2 = nivelDosList.get(position).getNombre();
+        try {
+            JSONArray procesos = new JSONArray(llave2);
+            for(int a=0; a < procesos.length(); a++) {
 
-                        String fila = procesos.getString(a);
-                        JSONObject objeto3 = new JSONObject(fila);
-                        String nombreproceso = objeto3.getString("nombre");
-                        holder.lista2.add(new Nivel_Dos(nombreproceso));
-                        String cursos = objeto3.getString("items");
-                        holder.lista3.add(new Nivel_Tres(cursos,"null"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
+                String fila = procesos.getString(a);
+                JSONObject objeto3 = new JSONObject(fila);
+                String nombreproceso = objeto3.getString("nombre");
+                String view_all_url = objeto3.getString("view_all_url");
+                holder.lista2.add(new Nivel_Dos(nombreproceso,view_all_url));
+                String cursos = objeto3.getString("items");
+                holder.lista3.add(new Nivel_Tres(cursos,"null"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -113,17 +112,10 @@ public class Nivel_Uno_Adapter extends RecyclerView.Adapter<Nivel_Uno_Adapter.Vi
 
 
             adapter = new Nivel_Dos_Adapter(itemView.getContext(),lista2, lista3);
-                recycler_segundo_nivel.setAdapter(adapter);
-                oldColors = titulo.getTextColors();
+            recycler_segundo_nivel.setAdapter(adapter);
+            oldColors = titulo.getTextColors();
 
-            }
-
-
-
-
-
-
-
+        }
 
         public void desplegar(){
             if (contenedor_nivel_dos.getVisibility() == View.GONE){

@@ -4,14 +4,18 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -46,12 +50,16 @@ import sunnysoft.presentapp.Datos.DatabaseHelper;
 import sunnysoft.presentapp.Datos.MyAsyncTask;
 import sunnysoft.presentapp.R;
 
+import static android.graphics.Typeface.BOLD;
+import static sunnysoft.presentapp.R.dimen.alto_inputs;
+
 public class CreateentradaActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
     String url;
     String token;
     String email;
     String subdomain;
+    String nombre;
 
     // arrays para pasar al multiselection spinner
 
@@ -94,6 +102,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
     EditText et;
     TextView txtcamp;
     Button btncrear;
+    Button btncre;
 
     //tags
     TagGroup mTagGroup;
@@ -160,9 +169,16 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
 
         Bundle datos = getIntent().getExtras();
         urlv = datos.getString("url");
+        nombre = datos.getString("nombre");
+
+
         url = datos.getString("url");
         url += "?token=" + token;
         url += "&email=" + email;
+
+
+        tags_ids = new Integer[0];
+
 
         Log.e("url",url);
 
@@ -174,7 +190,9 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
         multiSelectionSpinnerusers = (MultiSelectionSpinner) findViewById(R.id.mySpinnerusers);
         multiSelectionSpinnertags = (MultiSelectionSpinner) findViewById(R.id.mySpinnertags);
 
-        Desplegarcampos(url);
+        btncre = (Button) findViewById(R.id.btncrea);
+
+         Desplegarcampos(url);
 
         try {
             Thread.sleep(2000);
@@ -188,12 +206,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
         multiSelectionSpinnerusers.setListener(this, 2);
         multiSelectionSpinnertags.setListener(this, 3);
 
-
-
-
-
-
-
+        enviar();
 
     }
 
@@ -350,7 +363,8 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                     secundaria = (Toolbar) findViewById(R.id.toolbar_secundaria);
                     secundaria.setNavigationIcon(R.drawable.arrow_back);
                     TextView titulo_secundaria = (TextView) secundaria.findViewById(R.id.toolbar_secundaria_title);
-                    titulo_secundaria.setText(name);
+                    String label = name +" | " + nombre;
+                    titulo_secundaria.setText(label);
                     secundaria.setNavigationOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -437,6 +451,8 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
         ArrayList<Integer> removes = new ArrayList<>();
         Indices.clear();
 
+        btncre.setVisibility(View.GONE);
+
 
         Indices.addAll(indcamp);
         if (indicador == 1) {
@@ -451,16 +467,36 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
 
                 txtcamp = new TextView(this);
                 txtcamp.setText(nomcampos);
+                txtcamp.setTypeface(null, Typeface.BOLD);
+
+                LinearLayout.LayoutParams paramo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                paramo.setMargins(0,50,0,0);
+                txtcamp.setLayoutParams(paramo);
+
+
                 et = new EditText(this);
+                et.setBackgroundResource(R.drawable.inputs_secundarios);
                 et.setId(codigocampo);
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(520, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                param.setMargins(0,50,0,0);
+                et.setLayoutParams(param);
+                et.setLayoutParams(params);
+
                 layout.addView(txtcamp);
                 layout.addView(et);
-
 
             }
 
             btncrear = new Button(this);
             btncrear.setText("Crear");
+            btncrear.setBackgroundResource(R.drawable.botones_secundarios);
+            btncrear.setTextColor(getResources().getColor(R.color.color_letra_btn_prim));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+            params.setMargins(350,50,0,0);
+            btncrear.setLayoutParams(params);
             btncrear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -476,12 +512,12 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                     }
                     Parsearjson();
                     String proceso = "Crear Entrada";
-                    new MyAsyncTask(CreateentradaActivity.this, httppost, proceso, urlv)
+                    new MyAsyncTask(CreateentradaActivity.this, httppost, proceso, urlv , nombre)
                             .execute();
 
                 }
             });
-            layout.addView(btncrear);
+            layout.addView(btncrear,params);
 
         } else {
             layout = (LinearLayout) findViewById(R.id.layout_edittext);
@@ -519,10 +555,26 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                     codigocampo = listidcamp.get(Indices.get(c));
                     nomcampos = listcamp.get(Indices.get(c));
                     camppin.add(codigocampo);
+
                     txtcamp = new TextView(this);
                     txtcamp.setText(nomcampos);
+                    txtcamp.setTypeface(null, Typeface.BOLD);
+
+                    LinearLayout.LayoutParams paramo = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    paramo.setMargins(0,50,0,0);
+                    txtcamp.setLayoutParams(paramo);
+
+
                     et = new EditText(this);
+                    et.setBackgroundResource(R.drawable.inputs_secundarios);
                     et.setId(codigocampo);
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(520, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    param.setMargins(0,50,0,0);
+                    et.setLayoutParams(param);
+                    et.setLayoutParams(params);
+
                     layout.addView(txtcamp);
                     layout.addView(et);
 
@@ -532,6 +584,11 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
 
 
             btncrear = new Button(this);
+            btncrear.setBackgroundResource(R.drawable.botones_secundarios);
+            btncrear.setTextColor(getResources().getColor(R.color.color_letra_btn_prim));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+            params.setMargins(350,50,0,0);
             btncrear.setText("Crear");
 
             btncrear.setOnClickListener(new View.OnClickListener() {
@@ -549,7 +606,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                     }
                     Parsearjson();
                     String proceso = "Crear Entrada";
-                    new MyAsyncTask(CreateentradaActivity.this, httppost, proceso, urlv)
+                    new MyAsyncTask(CreateentradaActivity.this, httppost, proceso, urlv, nombre)
                             .execute();
 
 
@@ -558,7 +615,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                 }
             });
 
-            layout.addView(btncrear);
+            layout.addView(btncrear,params);
 
         }
 
@@ -651,6 +708,31 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
             e.printStackTrace();
         }
 
+
+    }
+
+    void enviar(){
+
+        btncre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fields_ids = new Integer[camppin.size()];
+                fields_content = new String[camppin.size()];
+                fields_ids = camppin.toArray(fields_ids);
+
+                for (int t = 0; t<fields_ids.length; t++){
+                    EditText campo = (EditText)findViewById(fields_ids[t]);
+                    String content = campo.getText().toString();
+                    fields_content[t]=content;
+                }
+                Parsearjson();
+                String proceso = "Crear Entrada";
+                new MyAsyncTask(CreateentradaActivity.this, httppost, proceso, urlv, nombre)
+                        .execute();
+
+            }
+        });
 
     }
 

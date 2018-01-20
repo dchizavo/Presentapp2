@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -39,9 +40,8 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import sunnysoft.presentapp.Datos.DatabaseHelper;
 import sunnysoft.presentapp.Interfaz.adapter.MuralesAdapter;
 import sunnysoft.presentapp.Interfaz.pojo.Murales;
-import sunnysoft.presentapp.Interfaz.pojo.Photos;
-import sunnysoft.presentapp.Interfaz.pojo.files;
 import sunnysoft.presentapp.R;
+import sunnysoft.presentapp.utils.EndlessRecyclerViewScrollListener;
 
 public class MuralesActivity extends AppCompatActivity {
 
@@ -156,7 +156,7 @@ public class MuralesActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(MuralesActivity.this, MenuActivity.class);
-               startActivity(i);
+                startActivity(i);
             }
         });
 
@@ -191,9 +191,6 @@ public class MuralesActivity extends AppCompatActivity {
                 // Declaracion de variables
                 String responseStr = null;
 
-
-
-
                 try {
 
                     //respuesta del servicio
@@ -213,6 +210,8 @@ public class MuralesActivity extends AppCompatActivity {
                         nombremural = valores.getString("name");
                         notification_count = valores.getInt("notificaciones_count");
                         mural_url = valores.getString("mural_url");
+
+                        Log.e("mural", mural_url);
 
                         urls.add(mural_url);
                         nomes.add(nombremural);
@@ -357,61 +356,83 @@ public class MuralesActivity extends AppCompatActivity {
             rootView = inflater.inflate(R.layout.fragment_murales, container, false);
             recyclerMurales = (RecyclerView) rootView.findViewById(R.id.recycler_murales);
             muralesList = new ArrayList<>();
-            List<String> urls = new ArrayList<>();
+            List<String> urls_fragment = new ArrayList<>();
 
             Bundle extras = getArguments();
-            int contador = extras.getInt("position");
+            final int contador = extras.getInt("position");
             urls = extras.getStringArrayList("ARG_urls");
-            String email= extras.getString("email");
-            String token= extras.getString("token");
-
-
-
+            final String email= extras.getString("email");
+            final String token= extras.getString("token");
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerMurales.setLayoutManager(linearLayoutManager);
 
-            Contenido(contador,urls, email, token);
+            String url = urls.get(contador-1);
+            url += "?token="+token;
+            url += "&email="+ email;
+            Log.e("Data: ", "Data contador " + urls.size());
+
+            Contenido(contador,url, email, token);
+
+            EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                    final int curSize = adapter.getItemCount();
+
+                    String url = urls.get(contador-1);
+                    url += "&token="+token;
+                    url += "&email="+ email;
+                    Log.e("Data: ", "Data contador " + urls.size());
+
+                    Contenido(contador,url, email, token);
+
+                    view.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyItemRangeInserted(curSize, muralesList.size() - 1);
+                        }
+                    });
+                }
+            };
+
+            recyclerMurales.addOnScrollListener(scrollListener);
+            // mocking network delay for API call
+            /*new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadFirstPage();
+                }
+            }, 1000);*/
+
+            // fin scroll view
 
             return rootView;
         }
 
-    public void Contenido(int contador, List<String> urls, String email, String token){
-
-
+        public void Contenido(final int contador, String urls_param, String email, String token){
 
             AsyncHttpClient client = new AsyncHttpClient();
 
-        final List<String> archivos2;
-        final List<String> photos2;
+            final Boolean[] archivo = new Boolean[1];
+            final Boolean[] photos = new Boolean[1];
 
-        final Boolean[] archivo = new Boolean[1];
-        final Boolean[] photos = new Boolean[1];
-
-
-        //String url = "http://serverprueba.present.com.co/api/mural/institucional/posts?email=daniela@dc.co&token=$2y$10$xeziClDwuVYHjpTcQB6ziufL.6/RYpP2pBjJpyBhQO1Qdqn1GKL4.";
-        String url = urls.get(contador-1);
-        url += "?token="+token;
-        url += "&email="+ email;
-
-        archivos2 = new ArrayList<>();
-
-        photos2 = new ArrayList<>();
+            //String url = "http://serverprueba.present.com.co/api/mural/institucional/posts?email=daniela@dc.co&token=$2y$10$xeziClDwuVYHjpTcQB6ziufL.6/RYpP2pBjJpyBhQO1Qdqn1GKL4.";
+           /* String url = urls.get(contador-1);
+            url += "?token="+token;
+            url += "&email="+ email;*/
 
             // llamado del servicio
 
-
-        RequestHandle post  = client.get(url, new AsyncHttpResponseHandler() {
+            RequestHandle post  = client.get(urls_param, new AsyncHttpResponseHandler() {
 
                 final ProgressDialog[] progressDialog = new ProgressDialog[1];
-
 
                 @Override
                 public void onStart(){
 
                     super.onStart();
-
 
                 }
 
@@ -420,7 +441,8 @@ public class MuralesActivity extends AppCompatActivity {
 
                     // Declaracion de variables
                     String responseStr = null;
-
+                    Boolean isfiles = false;
+                    Boolean isphotos = false;
 
                     try {
 
@@ -433,9 +455,13 @@ public class MuralesActivity extends AppCompatActivity {
 
                         JSONObject segundoobj = new JSONObject(valorLlave);
 
+                        String urlnextpage = segundoobj.getString("next_page_url");
+
                         String valordata = segundoobj.getString("data");
 
                         JSONArray items = new JSONArray(valordata);
+
+                       // Toast.makeText(getContext(), urlnextpage, Toast.LENGTH_LONG).show();
 
                         for (int i = 0; i < items.length(); i++) {
 
@@ -448,78 +474,78 @@ public class MuralesActivity extends AppCompatActivity {
                             String contentdata = valores.getString("content");
                             String user_photo = valores.getString("user_photo");
                             String read_more = valores.getString("read_more");
+                            String url_detalle = valores.getString("detail_url");
 
                             String file = valores.getString("files");
                             String phoos = valores.getString("photos");
                             //String read_more = "false";
 
+                            HashMap<String,String> archivos2 = new HashMap<>();
+                            HashMap<String,String> photos2 = new HashMap<>();
+
                             JSONArray fle = new JSONArray(file);
-
-
-
                             for (int a = 0; a < fle.length(); a++) {
                                 String fles = fle.getString(a);
 
                                 JSONObject its = new JSONObject(fles);
 
                                 //archivos.add(new files(its.getString("original_name"), its.getString("url")));
-                                archivos2.add(its.getString("original_name"));
+                                archivos2.put(its.getString("original_name"),its.getString("url"));
 
                             }
 
                             JSONArray fle2 = new JSONArray(phoos);
-
                             for (int b = 0; b < fle2.length(); b++) {
                                 String fles2 = fle2.getString(b);
-
                                 JSONObject its2 = new JSONObject(fles2);
-
-                                photos2.add(its2.getString("original_name"));
+                                photos2.put(its2.getString("original_name"),its2.getString("url"));
 
                             }
 
-                            if(archivos2.size()>0){
-                                archivo[0] = true;
-
+                            if(archivos2.isEmpty()){
+                                isfiles = false;
                             }  else {
-                                archivo[0] = false;
-                                archivos2.clear();
+                                isfiles = true;
                             }
 
-                            if(photos2.size()>0){
-                                photos[0] = true;
-
+                            if(photos2.isEmpty()){
+                                isphotos = false;
                             }  else {
-                                photos[0] = false;
+                                isphotos = true;
 
                             }
 
-
-
-                            muralesList.add(new Murales(user_namedata, created_atdata, contentdata, read_more,user_photo, archivo[0], photos[0]));
-
+                            muralesList.add(new Murales(user_namedata, created_atdata, contentdata,user_photo, read_more, isfiles, isphotos, archivos2, photos2, url_detalle));
                             adapter = new MuralesAdapter(getContext(), muralesList);
                             recyclerMurales.setAdapter(adapter);
+                            archivos2 = null;
+                            photos2 = null;
 
                         }
+
+                        urls.set(contador-1, urlnextpage);
+
+                       // Log.e("Data: ", "Data Url " + urls.get(contador - 1));
+
                     }  catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-            adapter = new MuralesAdapter(getContext(),muralesList);
-            recyclerMurales.setAdapter(adapter);
-            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
-            //return rootView;
-            //return rootView;
-        }
-        //public void vistamural(){
-        public void vistamural(){
+                    adapter = new MuralesAdapter(getContext(),muralesList);
+                    recyclerMurales.setAdapter(adapter);
 
-
+                    //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+                    //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));*/
+                    //return rootView;
+                    //return rootView;
                 }
+                //public void vistamural(){
+     /*   public void vistamural(){
+
+
+                }*/
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
@@ -562,12 +588,12 @@ public class MuralesActivity extends AppCompatActivity {
                     // When Http response code is '500'
                     else if (statusCode == 500) {
 
-                         Toast.makeText(getContext(), "Erros Statuscode = 500", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Erros Statuscode = 500", Toast.LENGTH_LONG).show();
                     }
                     // When Http response code other than 404, 500
                     else {
                         Log.i("On Failure", "NN");
-                          Toast.makeText(getContext(), "On Failure ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "On Failure ", Toast.LENGTH_LONG).show();
 
                         //Institución no valida.
                     }
@@ -576,7 +602,6 @@ public class MuralesActivity extends AppCompatActivity {
                 }
 
             });
-
 
         }
     }
@@ -595,7 +620,7 @@ public class MuralesActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-           return PlaceholderFragment.newInstance(position + 1, urls , email, token);
+            return PlaceholderFragment.newInstance(position + 1, urls , email, token);
         }
 
         @Override
