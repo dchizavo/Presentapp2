@@ -278,8 +278,10 @@ public class DetalleMuralesActivity extends AppCompatActivity {
             btnadjunto = new Button(this);
             btnadjunto.setBackgroundResource(R.drawable.botones_secundarios);
             btnadjunto.setTextColor(getResources().getColor(R.color.color_letra_btn_prim));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(10,10,10,10);
 
             btnadjunto.setText(archivos.get(a));
 
@@ -293,6 +295,7 @@ public class DetalleMuralesActivity extends AppCompatActivity {
 
                 }
             });
+            btnadjunto.setLayoutParams(params);
             detallemurales.addView(btnadjunto);
 
         }
@@ -306,13 +309,13 @@ public class DetalleMuralesActivity extends AppCompatActivity {
         for (int a = 0 ; a < photos3.size(); a++){
 
             imagenes = new ImageView(this);
-            imagenes.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            //imagenes.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            ViewGroup.LayoutParams imageViewParams = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(5,10,5,10);
 
-            imagenes.setLayoutParams(imageViewParams);
+
+            imagenes.setLayoutParams(params);
 
 
             Picasso.with(context).load(urlphotos3.get(a)).error(R.drawable.logo).into(imagenes);

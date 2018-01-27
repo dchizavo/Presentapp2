@@ -142,7 +142,7 @@ public class Nivel_Dos_Adapter extends RecyclerView.Adapter<Nivel_Dos_Adapter.Vi
             if (contenerdor_nivel_tres.getVisibility() == View.GONE){
                 contenerdor_nivel_tres.setVisibility(View.VISIBLE);
                 cont_titulo.setBackgroundResource(R.color.color_botones_primarios);
-                titulo.setTextColor(Color.WHITE);
+                titulo.setTextColor(context.getResources().getColor(R.color.color_input));
                 img.setImageDrawable(itemView.getResources().getDrawable(R.drawable.arrow_selected));
             }else{
                 contenerdor_nivel_tres.setVisibility(View.GONE);

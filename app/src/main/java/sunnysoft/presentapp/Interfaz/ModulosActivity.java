@@ -69,6 +69,7 @@ public class ModulosActivity extends AppCompatActivity {
         TextView toolbar_title = (TextView)toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         toolbar_title.setText(getResources().getText(R.string.txt_menu_modulos));
+        toolbar_title.setTextColor(getResources().getColor(R.color.color_letra_in_prim));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         midb = new DatabaseHelper(this);

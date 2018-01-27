@@ -121,7 +121,7 @@ public class Nivel_Uno_Adapter extends RecyclerView.Adapter<Nivel_Uno_Adapter.Vi
             if (contenedor_nivel_dos.getVisibility() == View.GONE){
                 contenedor_nivel_dos.setVisibility(View.VISIBLE);
                 cont_titulo.setBackgroundResource(R.color.color_botones_primarios);
-                titulo.setTextColor(Color.WHITE);
+                titulo.setTextColor(context.getResources().getColor(R.color.color_input));
                 img.setImageDrawable(itemView.getResources().getDrawable(R.drawable.arrow_selected));
             }else{
                 contenedor_nivel_dos.setVisibility(View.GONE);

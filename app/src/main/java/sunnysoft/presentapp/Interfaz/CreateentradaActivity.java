@@ -150,6 +150,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
         TextView toolbar_title = (TextView) toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
         toolbar_title.setText(getResources().getText(R.string.txt_menu_centradas));
+        toolbar_title.setTextColor(getResources().getColor(R.color.color_letra_in_prim));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
@@ -477,12 +478,12 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                 et = new EditText(this);
                 et.setBackgroundResource(R.drawable.inputs_secundarios);
                 et.setId(codigocampo);
-                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(520, ViewGroup.LayoutParams.WRAP_CONTENT);
+                //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(520, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                 param.setMargins(0,50,0,0);
                 et.setLayoutParams(param);
-                et.setLayoutParams(params);
+                //et.setLayoutParams(params);
 
                 layout.addView(txtcamp);
                 layout.addView(et);
@@ -494,8 +495,8 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
             btncrear.setBackgroundResource(R.drawable.botones_secundarios);
             btncrear.setTextColor(getResources().getColor(R.color.color_letra_btn_prim));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-            params.setMargins(350,50,0,0);
+            //params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+            params.setMargins(800,50,0,20);
             btncrear.setLayoutParams(params);
             btncrear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -517,7 +518,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
 
                 }
             });
-            layout.addView(btncrear,params);
+            layout.addView(btncrear);
 
         } else {
             layout = (LinearLayout) findViewById(R.id.layout_edittext);
@@ -570,7 +571,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                     et.setId(codigocampo);
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(520, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                     param.setMargins(0,50,0,0);
                     et.setLayoutParams(param);
                     et.setLayoutParams(params);
@@ -587,9 +588,10 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
             btncrear.setBackgroundResource(R.drawable.botones_secundarios);
             btncrear.setTextColor(getResources().getColor(R.color.color_letra_btn_prim));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-            params.setMargins(350,50,0,0);
+            //params.setLayoutDirection(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+            params.setMargins(800,50,0,20);
             btncrear.setText("Crear");
+            btncrear.setLayoutParams(params);
 
             btncrear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -615,7 +617,7 @@ public class CreateentradaActivity extends AppCompatActivity implements MultiSel
                 }
             });
 
-            layout.addView(btncrear,params);
+            layout.addView(btncrear);
 
         }
 

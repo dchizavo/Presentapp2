@@ -12,9 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:ignore="MissingConstraints" />
 
     <include
         android:id="@+id/toolbar_secundaria"
@@ -29,16 +30,11 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="416dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_secundaria"
-        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints,UnknownId">
 
         <LinearLayout
@@ -47,12 +43,12 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_edittext"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -69,21 +65,21 @@
 
                 <com.guna.libmultispinner.MultiSelectionSpinner
                     android:id="@+id/mySpinnerusers"
-                    android:layout_width="260dp"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Selección múltiple"
-                    android:background="@drawable/inputs_secundarios"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/inputs_secundarios"
+                    android:text="Selección múltiple"
 
                     tools:ignore="MissingConstraints" />
 
                 <me.gujun.android.taggroup.TagGroup
                     android:id="@+id/tag_group"
                     style="@style/TagGroup"
-                    android:layout_marginTop="10dp"
                     android:layout_marginStart="0dp"
+                    android:layout_marginTop="10dp"
                     app:atg_borderColor="@color/color_inputs_primarios"
                     app:atg_checkedBackgroundColor="@color/color_inputs_primarios"
                     app:atg_checkedBorderColor="@color/color_inputs_primarios"
@@ -101,11 +97,11 @@
 
                 <com.guna.libmultispinner.MultiSelectionSpinner
                     android:id="@+id/mySpinnertags"
-                    android:layout_width="260dp"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="0dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/inputs_secundarios"
                     tools:ignore="MissingConstraints" />
 
@@ -124,18 +120,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginStart="0dp"
+                    android:layout_marginTop="10dp"
                     android:text="Campos"
                     android:textStyle="bold" />
 
                 <com.guna.libmultispinner.MultiSelectionSpinner
                     android:id="@+id/mySpinnercampos"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="0dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/inputs_secundarios"
                     tools:ignore="MissingConstraints" />
 
@@ -147,14 +143,13 @@
                 android:layout_height="40dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="220dp"
+                android:layout_marginStart="270dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/botones_secundarios"
                 android:text="Crear"
+                android:textColor="@color/color_input"
                 android:textColorLink="@color/color_letra_btn_prim" />
-                </LinearLayout>
-
-
+        </LinearLayout>
 
 
     </ScrollView>
