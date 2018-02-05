@@ -3,6 +3,7 @@ package sunnysoft.presentapp.Interfaz.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import sunnysoft.presentapp.Interfaz.DetalleMuralesActivity;
+import sunnysoft.presentapp.Interfaz.DetallemailActivity;
 import sunnysoft.presentapp.Interfaz.pojo.Correos;
 import sunnysoft.presentapp.Interfaz.pojo.Murales;
 import sunnysoft.presentapp.R;
@@ -61,7 +63,13 @@ public class CorreosAdapter  extends RecyclerView.Adapter<sunnysoft.presentapp.I
                     .error(R.drawable.logo)
                     .into(holder.imgPersona);
 
-                    }
+            holder.cardCorreo.setOnClickListener(new CorreosAdapter.IntemClickListener(correosList.get(position).getUrl_detalle()));
+
+        }
+
+
+
+
 
         @Override
         public int getItemCount() {
@@ -77,7 +85,7 @@ public class CorreosAdapter  extends RecyclerView.Adapter<sunnysoft.presentapp.I
 
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context, DetalleMuralesActivity.class);
+                Intent i = new Intent(context, DetallemailActivity.class);
                 i.putExtra("servicio",url);
                 context.startActivity(i);
             }
@@ -90,6 +98,7 @@ public class CorreosAdapter  extends RecyclerView.Adapter<sunnysoft.presentapp.I
             private TextView txvasunto;
             private TextView txvhora;
             private ImageView imgPersona;
+            private CardView cardCorreo;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -99,6 +108,7 @@ public class CorreosAdapter  extends RecyclerView.Adapter<sunnysoft.presentapp.I
                 txvasunto = (TextView)itemView.findViewById( R.id.txv_asunto );
                 txvhora = (TextView)itemView.findViewById( R.id.txv_hora );
                 imgPersona = (ImageView)itemView.findViewById(R.id.img_persona);
+                cardCorreo = (CardView) itemView.findViewById(R.id.card_correos);
 
             }
 
